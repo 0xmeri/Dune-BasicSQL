@@ -1,0 +1,45 @@
+Ethereum'da her işlemin bloklara kaydedildiğini gözlemlediğimiz için, blokları sorgulayarak toplam işlem sayısını bulabiliriz.
+Sorgulamada da "ethereum.transactions" kullanılacak. 
+
+https://www.twigblock.com/images/tasks/dune_traces.png
+
+/* Ethereum'daki toplam işlem sayısını alma sorgusu */
+
+SELECT
+  --Sonuçları milyarlarca olarak bildirmek için 1e9'a bölünür
+  COUNT(*)/1e9 AS transactions_count
+FROM
+  ethereum.transactions;
+  
+  /* Şu ana kadar oluşturulan toplam akıllı sözleşme sayısını almak sorgusu */
+  
+SELECT
+  --Milyonlarca raporlamak için 1.000.000 (veya 1e6)'ya bölün
+  COUNT(*) / 1e6 AS contracts_count 
+FROM
+  ethereum.traces
+WHERE
+  `type` = 'create';
+  
+  
+  Ethereum ağı ile etkileşime giren tüm kullanıcı hesaplarını almak için "transactions" tablosundaki "from" sütununu sorgulayabiliriz. 
+  Aynı hesap birden çok kez etkileşime girmiş olabileceğinden, benzersiz olanları bulmak için "DISTINCT" kullanalım.
+  
+ /* Toplam aktif cüzdan sayısını almak için sorgu */
+ 
+SELECT
+  COUNT(DISTINCT `from`)/1e6 AS active_user_accounts
+FROM
+  ethereum.transactions;
+  
+/*  Aktif Cüzdan Adresleri - Aylık */
+ 
+  SELECT
+  DATE_TRUNC('month', block_time) AS month,
+  COUNT(DISTINCT `from`) AS active_users_count
+FROM
+  ethereum.transactions
+WHERE
+  block_time < date_trunc('month', NOW())
+GROUP BY
+  month;
