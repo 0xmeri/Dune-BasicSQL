@@ -1,0 +1,109 @@
+
+
+Yukarıda bilgilerin bir database içinde olduğunu varsayalım. 
+Yukarıdaki tabloya göre bazı sql komutlarını kullanalım. 
+
+// SELECT 
+musteri tablosunda bulunan ad, soyad sütunlarını listelemek için;
+Select ad,soyad FROM musteri
+ 
+musteri tablosunda bulunan tüm kayıtları listelemek için; 
+Select *From musteri
+ 
+// SELECT DISTINCT
+Bir tabloda bir sütun yinelenen değerleri içerebilir. Distinct ile farklı değerleri listeleyebiliriz.
+SELECT DISTINCT sehir FROM musteri;
+
+// WHERE
+Where anahtar sözcüğü ile sadece belirlenen kurala uygun olan kayıtların listelenmesini sağlayabiliriz.
+
+Örneğin musteri tablosunda sehir sütunu İstanbul olan kayıtları listelemek için;
+SELECT * FROM musteri WHERE sehir='istanbul'
+ 
+yada cinsiyet “K” olan kayıtları listelemek için;
+SELECT * FROM musteri WHERE cinsiyet='K'
+
+// AND – OR Kullanımı
+AND Operatörü 1. Koşul ve 2. Koşulun doğru olması durumunda çalışır.
+
+Örneğin musteri tablosunda  Cinsiyeti “E” ve Şehri “İstanbul” olanları listelemek için;
+SELECT * FROM musteri
+WHERE sehir='İstanbul'
+AND cinsiyet='E'
+ 
+OR operatörü 1. Koşul yada 2. Koşulun doğru olması durumunda çalışır.
+
+Örneğin musteri tablosunda şehri İstanbul yada Samsun olanları listelemek için;
+SELECT * FROM musteri
+WHERE sehir='İstanbul'
+OR sehir='Samsun'
+ 
+AND ve OR operatörü birliktede kullanılabilir.
+
+Örnek olarak musteri tablosunda cinsiyeti ‘K’ olan ve Şehri “Konya” yada “Manisa” olanları listelemek için.
+SELECT * FROM musteri
+WHERE cinsiyet='K'
+AND (City='Konya' OR City='Manisa')
+ 
+// ORDER BY Kullanımı
+ORDER BY, varsayılan olarak artan düzende kayıtları sıralar. Azalan kayıtları sıralamak için DESC anahtar sözcüğünü kullanabilirsiniz.
+
+Örnek olarak musteri tablosundaki kayıtları ad sütünuna göre artan ve azan olarak sıralayalım.
+SELECT * FROM musteri
+ORDER BY ad 
+ 
+Azalan sıralama örneği;
+SELECT * FROM musteri
+ORDER BY ad DESC
+ 
+// INSERT INTO Kullanımı
+Kayıt eklemek için kullanılır.
+
+
+örnek olarak musteri tablosuna bir kayıt ekleyelim.
+INSERT INTO musteri(ad, soyad, dtarih, sehir, cinsiyet, puan)
+VALUES ('Ali','Şahin','2000-10-12','Burdur','E',68)
+ 
+// UPDATE kullanımı
+Kayıtlar üzerinde değişiklik güncelleme yapmak için kullanılır.
+
+Örnek olarak musterino su 3 olan kaydın puanını 90 olarak değiştirelim.
+UPDATE musteriler
+SET puan=90 
+WHERE musterino=3
+ 
+// DELETE Kullanımı
+Tablodan kayıt silmek için kullanılır.
+
+Örnek olarak musterino su 4 olan kaydı silmek için
+DELETE FROM musteriler
+WHERE musterino=4
+ 
+musteriler tablosundaki tüm kayıtları silmek için
+DELETE * FROM musteriler
+ 
+// SELECT TOP Kullanımı
+Belirtilen sayıda kaydı görüntülemek için kullanılır.
+örnek olarak musteriler tablosundaki ilk 5 kaydı listeleylim.
+ 
+SELECT TOP 5 * FROM musteriler
+ 
+// LIKE Kullanımı
+Belirtilen bir değeri aramak için kullanılır.
+Örnek olarak musteriler tablosunda şehri S ile başlayan kayıtları listeleyelim.
+SELECT * FROM musteriler
+WHERE sehir LIKE 's%'
+ 
+Şehri s ile biten kayıtları listelemek için;
+SELECT * FROM musteriler
+WHERE sehir LIKE '%s'
+ 
+Şehrin içerisinde “tan” bulunan kayıtları listelemek için;
+SELECT * FROM musteriler
+WHERE sehir LIKE '%tan%'
+
+-----
+
+Basit birkaç SQL kavramlarından sonra Dune Analistin örnekleri daha kolay ve a.ıklayıcı olacaktır. 
+Diğer bazı sorgulamalar:
+https://www.yazilimkodlama.com/sql-server-2/sql-sorgulari-ve-ornekleri/
