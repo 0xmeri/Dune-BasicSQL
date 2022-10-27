@@ -1,0 +1,39 @@
+                                 Basit SQL 
+
+6 farklı Sorgu içerisinden ilki : Temel Sözdizimi / Basic Syntax
+Sorgu 1 expenses : "giderler" tablosundan tüm verileri almak için temel sözdizimi:
+SELECT * FROM tracker.expenses 
+
+Sorgu 2 WHERE : gerekli satırları filtrelemek için bir koşulun nasıl ekleneceği: 
+SELECT * FROM tracker.expenses
+WHERE category = 'EatOut'
+
+Sorgu 3 AND: 
+SELECT * FROM tracker.expenses
+WHERE category = 'EatOut'
+AND amount <= 5;
+
+Sorgu 4 DISTINCT: 
+DINSTINC transacationInfo as CoffeeShop
+SELECT * FROM tracker.expenses
+WHERE category = 'EatOut'
+AND amount <= 5;
+
+Sorgu 5 GROUP BYSUMCOUNT: 
+DINSTINC transacationInfo as CoffeeShop
+COUNT(*) as TimesVisited
+SELECT * FROM tracker.expenses
+WHERE category = 'EatOut'
+AND amount <= 5;
+GROUP BY CoffeeShop
+
+Sorgu 6 DATE_TRUNC:  Haftalık giderlere bakmak istediğimizi varsayalım: 
+DATE_TRUNC tarihleri girdi olarak kabul eden ve bunları hafta, ay vb. gibi belirtilen biçimde çıktı olarak veren bir işlevdir.
+
+DATE_TRUNC('week', DATE '2022-05-10') → 2022-05-09 
+DATE_TRUNC('week', DATE '2022-05-12') → 2022-05-09
+
+DATE_TRUNC('week', transacationDate) as Week,
+SUM (Amount) as TotalAmountSpent
+FROM tracker.expenses
+GORUP BY Week
