@@ -1,0 +1,43 @@
+ethereum.transactions: Ethereum üzerindeki tüm işlemler
+ethereum.logs: Sözleşmeler tarafından yayılan Ethreum olaylarının günlükleri (Transfer gibi)
+erc20.ERC20_evt_Transfer: Jeton gönderirken yayılan tüm transfer olayları
+prices.layer1_usd: Dakika başına çözünürlükte ETH ve diğer birçok popüler jeton için bir fiyat tablosu
+
+--
+Örnekler
+1) 
+
+Bu sorguyu çalıştırmadan önce, bazı sorguların tamamlanmasının çok uzun sürebileceğini ve çok fazla veri döndürebileceğini unutmamak önemlidir. 
+Özellikle bir sorgu üzerinde çalışmaya başlarken, süreci hızlandırmak için döndürülen girdilerin sayısını sınırlamakta fayda var. 
+Bu, “limit” maddesi eklenerek yapılabilir. Bu, döndürülen satır sayısını belirtilen sayıyla sınırlar.
+
+select * from ethereum.”transactions” limit 5
+
+2) Sonuçlar bölümünde bazı sonuçlarımız var, ancak bunlar ilk Ethereum işlemleri. 
+Sonuncuları elde etmek için önce sorguyu sütunlardan birinde azalan bir düzende sıralayabiliriz. 
+Bu durumda  block time veya block number iyi bir seçim olabilir.
+
+select * from ethereum.”transactions” 
+order by block_time desc limit 5
+
+Şimdi en son bloktan 5 işlemimiz var.
+
+3) Biraz daha karmaşık bir sorguya bakalım. Son 10 gün içinde günlük gönderilen toplam ETH değerini bilmek istiyoruz. 
+Bu aynı zamanda filtrelemeyi ve verileri zamana göre gruplandırmayı göstermeye de yardımcı olacaktır.
+
+Bu verileri almak için sorgu aşağıdaki gibidir: 
+
+select date_trunc(‘day’, block_time) as “Date”, sum(value/1e18) as “Value”
+from ethereum.”transactions”
+where block_time > now() — interval ’10 days’
+group by 1 order by 1
+
+Aşagıdaki detaya dikkat.
+
+where block_time > now() — interval ’10 days’: 
+Sadece son 10 günün blok zamanlarını gösterir. Bu aynı zamanda sorgunun çok daha hızlı çalışmasını sağlar.
+
+---
+
+Daha fazla gelişmiş detay için buraya bakabilirsiniz:
+https://medium.com/zengo/dune-analytics-introduction-tutorial-with-examples-d2c764600d6 
