@@ -1,0 +1,24 @@
+1) Ethereum'da her blok bir işlem listesi içerir, bunu belirli bir blok için filtreleyerek sorgulayabiliriz. 
+Şimdi buradaki ilk örnekte 15870110 bloğuna bakacağız: 
+
+SELECT * FROM ethereum."transactions"
+WHERE block_number = 15870110 
+ORDER BY block_time DESC
+
+Çıktı: https://dune.com/queries/1495084 
+
+2) Zincire eklenen bu tek blok, Ethereum sanal makinesinin ( EVM ) durumunu değiştirir. 
+Bazen düzinelerce, yüzlerce işlem bir kerede doğrulanır. Bu özel durumda 222 işlem dahil edilmiştir.
+Kaç tanesinin gerçekten başarılı olduğunu görmek için başarılı işlemleri saymak için başka bir filtre ekleriz:
+
+WITH temp_table AS (
+    SELECT * FROM ethereum."transactions"
+    WHERE block_number = 15870110 AND success = true
+    ORDER BY block_time DESC
+)
+SELECT
+    COUNT(success) AS num_successful_txn
+FROM temp_table
+
+Çıktı: 15870110 bloğu için toplam 222 işlemden 94'ü başarıyla doğrulandı:
+https://dune.com/queries/1495203
