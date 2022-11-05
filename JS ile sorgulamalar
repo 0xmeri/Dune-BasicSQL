@@ -1,0 +1,65 @@
+*web3.js
+Ethereum adresini bulmak istiyorum ve neredeyse tüm harflere sahibim. 
+Cüzdanın başlangıcı: 0xb6b2ceb624a6b667e67af1893b16706baec21 Ama kalan harfleri nasıl bulabilirim?
+
+Pozitif bakiyeye sahip herhangi bir hesap bulamayan web3.js 1.0-beta kullanan kod:
+
+const Web3 = require('web3');
+const web3 = new Web3('https://mainnet.infura.io');
+
+const start = '0xb6b2ceb624a6b667e67af1893b16706baec21';
+
+async function main() {
+    for (var i = 0; i < 4096; i++) {
+        const end = web3.utils.padLeft(web3.utils.toHex(i).substring(2), 3);
+        const address = start + end;
+        const balance = parseInt(await web3.eth.getBalance(address), 10);
+
+        if (balance > 0) {
+            console.log(`${address} has a balance of ${balance} wei.`);
+        }
+    }
+}
+
+main();
+
+-- ya da 
+
+1
+
+
+3 haneniz eksik ve tüm olası kombinasyonlar 0xb6b2ceb624a6b667e67af1893b16706baec21000( buradan ) ile 0xb6b2ceb624a6b667e67af1893b16706baec21fff( buradan ) 
+arasındaki geçerli adreslerdir.
+
+Tüm kombinasyonları kontrol etmekten başka seçeneğiniz yok:16^3 = 4096
+
+Aradığınız adresin pozitif bakiyeye sahip olduğundan eminseniz, 
+bakiyenin olası her kombinasyonunu kontrol edecek ve sadece pozitif bakiyeli adresi çıkaracak bir algoritma yazabilirsiniz.
+
+Örneğin:
+
+const provider     = new Web3.providers.HttpProvider("https://mainnet.infura.io/");
+const web3         = new Web3(provider);
+
+const alphabet = [0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f];
+const input = "0xb6b2ceb624a6b667e67af1893b16706baec21";
+
+for (x in alphabet) { 
+    for (y in alphabet) {
+        for (z in alphabet) {
+            let address = input + x + y + z;
+            let balance = new BigNumber(web3.eth.getBalance(address));
+
+            if(balance.greaterThan(new BigNumber(0)) {
+               console.log(address + "=" + web3.fromWei(balance, "ether"));
+            }
+        }
+    }
+    
+    --
+    % joker karakterli LIKE sözdizimini kullanarak SQL sorgusu yazabilirsiniz.
+
+SELECT *
+FROM ethereum.transactions
+WHERE TO_ADDRESS LIKE '0xb6b2ceb624a6b667e67af1893b16706baec21%'
+}
